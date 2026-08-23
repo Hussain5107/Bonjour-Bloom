@@ -14,7 +14,8 @@
     "test": "vitest run --config vitest.config.ts",
     "validate:content": "node --experimental-strip-types scripts/validate-content.ts",
     "content:schema": "node --experimental-strip-types scripts/generate-content-schema.ts",
-    "content:import": "node --experimental-strip-types scripts/import-content.ts"
+    "content:import": "node --experimental-strip-types scripts/import-content.ts",
+    "curriculum:seed": "node --experimental-strip-types scripts/seed-curriculum.ts"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.112.3",

@@ -103,3 +103,43 @@ drop policy "published lesson objectives or editors" on public.lesson_objectives
 create policy "published lesson objectives or editors" on public.lesson_objectives for select using(exists(select 1 from public.curriculum_lessons l where l.id=lesson_id and l.state='published') or public.curriculum_is_editor());
 drop policy "published variants or editors" on public.lesson_variants;
 create policy "published variants or editors" on public.lesson_variants for select using(exists(select 1 from public.curriculum_lessons l where l.id=lesson_id and l.state='published') or public.curriculum_is_editor());
+
+-- Complete universal metadata and common query indexes.
+alter table public.curriculum_tracks add column interface_language text not null default 'en', add column locale text not null default 'en', add column writing_direction text not null default 'ltr' check(writing_direction in ('ltr','rtl')), add column script text, add column metadata jsonb not null default '{}'::jsonb;
+alter table public.learning_objectives add column primary_skill text not null default 'vocabulary', add column secondary_skills text[] not null default '{}', add column topic_tags text[] not null default '{}', add column authoring_notes text not null default '', add column mastery_evidence text not null default 'recognition', add column state public.curriculum_state not null default 'draft', add column cefr_rationale text not null default '';
+alter table public.curriculum_lessons add column locale text not null default 'fr-FR', add column primary_skill text not null default 'vocabulary', add column secondary_skills text[] not null default '{}', add column topic_tags text[] not null default '{}', add column estimated_minutes smallint not null default 8 check(estimated_minutes>0), add column active boolean not null default true, add column deprecated boolean not null default false;
+create index curriculum_tracks_language_active_idx on public.curriculum_tracks(language_code,is_active);
+create index curriculum_modules_track_sequence_idx on public.curriculum_modules(track_id,sequence);
+create index learning_objectives_level_skill_idx on public.learning_objectives(cefr_level,primary_skill);
+create index learning_objectives_topics_idx on public.learning_objectives using gin(topic_tags);
+create index curriculum_lessons_discovery_idx on public.curriculum_lessons(language_code,cefr_level,state,active,sequence);
+create index curriculum_lessons_skill_idx on public.curriculum_lessons(primary_skill);
+create index curriculum_lessons_topics_idx on public.curriculum_lessons using gin(topic_tags);
+create index lesson_variants_audience_idx on public.lesson_variants(lesson_id,audience);
+create index objective_prerequisites_lookup_idx on public.objective_prerequisites(prerequisite_id);
+
+create or replace function public.protect_published_curriculum() returns trigger language plpgsql as $$
+begin
+ if old.state='published' and new.state='published' then raise exception 'Published curriculum versions are immutable; create a new version'; end if;
+ return new;
+end $$;
+create trigger published_curriculum_immutable before update on public.curriculum_lessons for each row execute function public.protect_published_curriculum();
+
+create or replace function public.transition_curriculum_lesson(lesson uuid, target public.curriculum_state) returns public.curriculum_lessons language plpgsql security definer set search_path=public as $$
+declare current public.curriculum_lessons; variant_count integer; objective_count integer;
+begin
+ select * into current from public.curriculum_lessons where id=lesson for update;
+ if current.id is null then raise exception 'Lesson not found'; end if;
+ if target='in_review' and current.state='draft' and public.curriculum_has_role('author') then null;
+ elsif target='reviewed' and current.state='in_review' and public.curriculum_has_role('reviewer') then
+   select count(*) into variant_count from public.lesson_variants where lesson_id=current.id;
+   select count(*) into objective_count from public.lesson_objectives where lesson_id=current.id;
+   if variant_count<1 or objective_count<1 or not(current.provenance ?& array['createdBy','sourceName','license','attribution']) then raise exception 'Curriculum metadata validation failed'; end if;
+   update public.curriculum_lessons set reviewed_by=auth.uid(),reviewed_at=now() where id=current.id;
+ elsif target='published' and current.state='reviewed' and public.curriculum_has_role('publisher') then
+   if current.reviewed_by is null or current.reviewed_at is null then raise exception 'Recorded review is required'; end if;
+   update public.curriculum_lessons set published_by=auth.uid(),published_at=now() where id=current.id;
+ elsif target='archived' and current.state<>'archived' and public.curriculum_has_role('publisher') then null;
+ else raise exception 'Invalid or unauthorized curriculum transition'; end if;
+ update public.curriculum_lessons set state=target,updated_at=now() where id=current.id returning * into current; return current;
+end $$;
