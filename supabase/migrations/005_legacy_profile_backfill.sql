@@ -8,7 +8,7 @@ with legacy_profiles as (
  cross join lateral jsonb_array_elements(case when jsonb_typeof(s.state->'profiles')='array' then s.state->'profiles' else '[]'::jsonb end) p
 )
 insert into public.learner_profiles(id,user_id,account_id,display_name,avatar,age_mode,daily_goal,profile_type,age_band,target_language_code,interface_language_code,proficiency_level,level_confirmed,learning_goal,daily_target_minutes,audio_settings,updated_at)
-select profile_id,user_id,account_id,left(coalesce(nullif(profile->>'name',''),'Learner'),40),coalesce(nullif(profile->>'avatar',''),'🦊'),'adult',greatest(1,least(180,coalesce((profile->>'dailyGoal')::int,1))),'adult','18+','fr','en',coalesce(nullif(profile->>'proficiency',''),'pre_a1'),coalesce((profile->>'levelConfirmed')::boolean,false),coalesce(nullif(profile->>'learningGoal',''),'general'),case when coalesce((profile->>'dailyTargetMinutes')::int,10) in(5,10,15,20,30) then (profile->>'dailyTargetMinutes')::int else 10 end,'{}'::jsonb,now()
+select profile_id,user_id,account_id,left(coalesce(nullif(profile->>'name',''),'Learner'),40),coalesce(nullif(profile->>'avatar',''),'🦊'),'adult',greatest(1,least(180,coalesce((profile->>'dailyGoal')::int,1))),'adult','18+','fr','en',coalesce(nullif(profile->>'proficiency',''),'pre_a1'),coalesce((profile->>'levelConfirmed')::boolean,false),coalesce(nullif(profile->>'learningGoal',''),'general'),case when coalesce((profile->>'dailyTargetMinutes')::int,10) in(5,10,15,20,30) then coalesce((profile->>'dailyTargetMinutes')::int,10) else 10 end,'{}'::jsonb,now()
 from legacy_profiles on conflict(id) do nothing;
 
 -- Users with no usable legacy profile receive one neutral adult profile exactly once.
