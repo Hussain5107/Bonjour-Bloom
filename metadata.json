@@ -1,0 +1,10 @@
+{
+  "name": "Bonjour Bloom",
+  "description": "Gentle, joyful French language learning app for kids and curious beginners with speech practice, interactive exercises, and offline support.",
+  "requestFramePermissions": [
+    "microphone"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
