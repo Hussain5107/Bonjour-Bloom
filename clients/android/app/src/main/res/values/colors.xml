@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primary_navy">#17324D</color>
+    <color name="primary_coral">#E96351</color>
+    <color name="cream_bg">#FFF9ED</color>
+    <color name="mint">#DCEFE4</color>
+    <color name="gold">#F2BF55</color>
+    <color name="ink">#24384A</color>
+</resources>
