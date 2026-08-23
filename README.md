@@ -5,19 +5,24 @@ A tablet-first French learning PWA for ages 5–11 and adult complete beginners.
 ## Run and test
 
 ```bash
-npm install
+npm ci
 npm run dev
+```
+
+Open `http://localhost:3000`. Before committing or deploying, run:
+
+```bash
 npm run lint
 npm run typecheck
 npm test
 npm run build
 ```
 
-No credentials are required. Copy `.env.example` only when configuring production providers.
+No credentials are required for the local-only experience. Copy `.env.example` to `.env.local` when configuring Supabase or production providers. Never commit `.env.local` or server credentials.
 
 ### Email accounts and cloud progress
 
-Create a Supabase project, run `supabase/schema.sql` and then `supabase/migrations/002_profiles_progress.sql`, enable Email authentication, and set the Site URL plus redirect URLs. Configure `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY`. Email/password sessions persist on-device. The legacy JSON row remains compatible while normalized profile, progress, and idempotent completion tables enforce ownership with RLS. Never place a service-role key in client configuration.
+Create a Supabase project, run `supabase/schema.sql`, then apply the numbered files in `supabase/migrations/` in ascending order. Enable Email authentication and set the Site URL plus redirect URLs. Configure `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` in `.env.local`. Email/password sessions persist on-device. The legacy JSON row remains compatible while normalized profile, progress, idempotent completion, and authored-content tables enforce ownership with RLS. Never place a service-role key in client configuration.
 
 ## Architecture and local data
 
