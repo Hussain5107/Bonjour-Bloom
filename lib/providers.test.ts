@@ -1,0 +1,8 @@
+import {describe,expect,it} from 'vitest';
+import {AudioService,MockAudioProvider} from './audio';
+import {feedbackLabel,MockPronunciationProvider,PronunciationResult} from './pronunciation';
+import {dueItems,scheduleReview} from './progress';
+
+describe('audio provider orchestration',()=>{it('passes voice and natural slow speed through a neutral provider',async()=>{const mock=new MockAudioProvider(),service=new AudioService([mock]);service.setVoice('male');await service.play('Bonjour','slow');expect(mock.requests[0]).toMatchObject({text:'Bonjour',voice:'male',speed:'slow',locale:'fr-FR'})})});
+describe('honest pronunciation results',()=>{it('never marks unreliable audio wrong',async()=>{const result:PronunciationResult={expectedText:'Bonjour',insertions:[],omissions:[],substitutions:[],reliability:'unavailable',provider:'mock',providerVersion:'1',failureReason:'too-quiet'},provider=new MockPronunciationProvider(result);expect(feedbackLabel(await provider.assess(new Blob(),'Bonjour'))).toBe('We could not hear clearly')});it('separates excellent from partial evidence',()=>{expect(feedbackLabel({expectedText:'Bonjour',recognizedText:'Bonjour',confidence:.94,completeness:.95,insertions:[],omissions:[],substitutions:[],reliability:'high',provider:'mock',providerVersion:'1'})).toBe('Excellent')})});
+describe('adaptive review scheduling',()=>{it('keeps independent mastery and makes lapses return sooner',()=>{const now=new Date('2026-08-23T00:00:00Z'),good=scheduleReview(undefined,'v1','good',now),again=scheduleReview(good,'v1','again',now);expect(new Date(again.dueAt).getTime()).toBeLessThan(new Date(good.dueAt).getTime());expect(again.lapses).toBe(1);expect(dueItems({v1:again},new Date('2026-08-24T00:00:00Z'))).toHaveLength(1)})});
