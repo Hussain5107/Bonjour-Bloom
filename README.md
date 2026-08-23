@@ -15,6 +15,10 @@ npm run build
 
 No credentials are required. Copy `.env.example` only when configuring production providers.
 
+### Email accounts and cloud progress
+
+Create a Supabase project, run `supabase/schema.sql` in its SQL editor, enable Email authentication, and set the Site URL plus redirect URLs for local and production origins. Configure `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY`. The public anon key is protected by row-level security; never place a Supabase service-role key in client configuration. Users receive passwordless email links, and the `user_learning_state` policy restricts each account to its own JSON progress record. Existing device-local progress is uploaded on first sign-in when no cloud record exists.
+
 ## Architecture and local data
 
 - `app/bloom-app.tsx`: accessible UI and interaction flows.

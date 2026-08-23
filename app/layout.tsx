@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import { Providers } from './providers';
+import { AccountGate } from './account-gate';
 
 export const metadata: Metadata = {
   title: 'Bonjour Bloom — French for curious kids',
@@ -17,7 +18,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body><Providers>{children}</Providers></body>
+      <body><Providers><AccountGate>{children}</AccountGate></Providers></body>
     </html>
   );
 }
