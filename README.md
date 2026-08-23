@@ -1,6 +1,8 @@
 # Bonjour Bloom
 
-This GitHub repository is the canonical source for the complete deployed project. Start with the documentation map below before making changes.\n\nA tablet-first French learning PWA for ages 5–11 and adult complete beginners. The initial release contains a validated, data-driven five-lesson Pre-A1 Starter Path, independent learner profiles, resumable progress, French audio, local recording/replay, review scheduling, parent controls, IndexedDB offline state, Supabase sync, install guidance, and app-shell caching.
+This GitHub repository is the canonical source for the complete deployed project. Start with the documentation map below before making changes.
+
+A tablet-first French learning PWA for ages 5–11 and adult complete beginners. The initial release contains a validated, data-driven five-lesson Pre-A1 Starter Path, independent learner profiles, resumable progress, French audio, local recording/replay, review scheduling, parent controls, IndexedDB offline state, Supabase sync, install guidance, and app-shell caching.
 
 
 ## Documentation map
