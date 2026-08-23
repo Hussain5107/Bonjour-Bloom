@@ -1,6 +1,18 @@
 # Bonjour Bloom
 
-A tablet-first French learning PWA for ages 5–11 and adult complete beginners. The initial release contains a validated, data-driven five-lesson Pre-A1 Starter Path, independent learner profiles, resumable progress, French audio, local recording/replay, review scheduling, parent controls, IndexedDB offline state, Supabase sync, install guidance, and app-shell caching.
+This GitHub repository is the canonical source for the complete deployed project. Start with the documentation map below before making changes.\n\nA tablet-first French learning PWA for ages 5–11 and adult complete beginners. The initial release contains a validated, data-driven five-lesson Pre-A1 Starter Path, independent learner profiles, resumable progress, French audio, local recording/replay, review scheduling, parent controls, IndexedDB offline state, Supabase sync, install guidance, and app-shell caching.
+
+
+## Documentation map
+
+- [Agent instructions](AGENTS.md) — primary rules for Codex, Claude Code, Gemini/AI Studio, and other coding agents.
+- [Current project status](docs/PROJECT_STATUS.md) — deployed capabilities, known limitations, and next priorities.
+- [Architecture](docs/ARCHITECTURE.md) — system boundaries, modules, data flow, and decisions.
+- [Development guide](docs/DEVELOPMENT.md) — setup, verification, common tasks, and Git workflow.
+- [Deployment runbook](docs/DEPLOYMENT.md) — Sites publication, smoke test, and rollback.
+- [Content authoring](CONTENT_AUTHORING.md) — validated lesson-content workflow.
+- [Privacy design](PRIVACY_DESIGN.md) and [reuse audit](docs/AUDIT_AND_REUSE.md).
+- [Historical planning material](docs/history/) — preserved product rationale and phase prompts; current docs take precedence.
 
 ## Run and test
 
