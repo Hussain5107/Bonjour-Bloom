@@ -1,5 +1,5 @@
 @media (max-width: 800px) {
-  html, body { width: 100%; max-width: 100%; overflow-x: hidden; }
+  html, body { width: 100%; max-width: 100%; }
   body { min-height: 100dvh; background: var(--cream); }
   img, audio { max-width: 100%; }
 
