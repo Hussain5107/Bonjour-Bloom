@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "content_version": 1,
+  "status": "draft",
+  "lesson_id": "prea1-greetings-001",
+  "title": "Bonjour ! Les salutations",
+  "topic": "Greetings and polite words",
+  "level": "Pre-A1",
+  "target_languages": { "instruction_language": "English", "learning_language": "French" },
+  "learning_objectives": ["Say hello and goodbye in French.", "Use simple polite words."],
+  "provenance": {
+    "created_by": "Bonjour Bloom content team",
+    "source_notes": [
+      { "url": "https://apprendre.tv5monde.com/fr/exercices/premiere-classe/les-salutations", "title": "TV5MONDE: Les salutations", "accessed_at": "2026-08-23" }
+    ]
+  },
+  "audio_assets": [
+    { "id": "audio-bonjour", "text": "Bonjour", "slow_text": "Bon-jour", "locale": "fr-FR" },
+    { "id": "audio-au-revoir", "text": "Au revoir", "slow_text": "Au re-voir", "locale": "fr-FR" },
+    { "id": "audio-dialogue-hello", "text": "Bonjour ! Au revoir !", "locale": "fr-FR" }
+  ],
+  "vocabulary": [
+    { "id": "vocab-bonjour", "french": "bonjour", "english": "hello; good morning", "article": "", "gender": "not-applicable", "part_of_speech": "interjection", "ipa": "[bɔ̃.ʒuʁ]", "pronunciation_guide": "Say it smoothly in two parts: bon-jour.", "example_french": "Bonjour, Léo !", "example_english": "Hello, Léo!", "audio_id": "audio-bonjour", "display_order": 1 },
+    { "id": "vocab-au-revoir", "french": "au revoir", "english": "goodbye", "article": "", "gender": "not-applicable", "part_of_speech": "interjection", "ipa": "[o ʁə.vwaʁ]", "pronunciation_guide": "Join the three parts: au-re-voir.", "example_french": "Au revoir, Papa !", "example_english": "Goodbye, Dad!", "audio_id": "audio-au-revoir", "display_order": 2 }
+  ],
+  "dialogues": [
+    { "id": "dialogue-school", "title": "At school", "lines": [
+      { "id": "dialogue-school-01", "speaker": "Lina", "french": "Bonjour !", "english": "Hello!", "audio_id": "audio-bonjour" },
+      { "id": "dialogue-school-02", "speaker": "Noé", "french": "Au revoir !", "english": "Goodbye!", "audio_id": "audio-au-revoir" }
+    ] }
+  ],
+  "exercises": [
+    { "id": "exercise-audio-word-01", "type": "audio_to_word", "instruction": "Listen and choose the word you hear.", "prompt": "Choose the greeting.", "options": ["Bonjour", "Au revoir"], "correct_answer": "Bonjour", "audio_id": "audio-bonjour", "vocabulary_refs": ["vocab-bonjour", "vocab-au-revoir"], "explanation": "Bonjour means hello or good morning.", "age_modes": ["ages_5_7", "ages_8_9", "ages_10_11", "adults"] },
+    { "id": "exercise-dialogue-01", "type": "dialogue_response", "instruction": "Choose the polite reply.", "prompt": "Someone says Bonjour.", "options": ["Bonjour", "Au revoir"], "correct_answer": "Bonjour", "dialogue_ref": "dialogue-school", "vocabulary_refs": ["vocab-bonjour"], "explanation": "Return the greeting with Bonjour.", "age_modes": ["ages_5_7", "ages_8_9", "ages_10_11", "adults"] }
+  ],
+  "pronunciation_prompts": [
+    { "id": "pronunciation-bonjour", "vocabulary_id": "vocab-bonjour", "prompt_french": "Bonjour", "tip_english": "Say it smoothly in two parts: bon-jour.", "audio_id": "audio-bonjour" }
+  ],
+  "age_adaptations": {
+    "ages_5_7": { "approach": "Use pictures, gestures and echo speaking.", "activity": "Wave and say bonjour, then au revoir.", "excluded_exercise_types": ["dictation"] },
+    "ages_8_9": { "approach": "Use short paired role-play.", "activity": "Practise a two-line greeting.", "excluded_exercise_types": [] },
+    "ages_10_11": { "approach": "Compare polite and informal situations.", "activity": "Choose the best greeting for each person.", "excluded_exercise_types": [] },
+    "adults": { "approach": "Use practical everyday encounters.", "activity": "Role-play greeting and leaving a shop.", "excluded_exercise_types": [] }
+  }
+}

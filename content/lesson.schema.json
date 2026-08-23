@@ -1,0 +1,589 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "type": "number",
+      "const": 1
+    },
+    "content_version": {
+      "type": "integer",
+      "exclusiveMinimum": 0,
+      "maximum": 9007199254740991
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "reviewed",
+        "published"
+      ]
+    },
+    "lesson_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "topic": {
+      "type": "string",
+      "minLength": 1
+    },
+    "level": {
+      "type": "string",
+      "const": "Pre-A1"
+    },
+    "target_languages": {
+      "type": "object",
+      "properties": {
+        "instruction_language": {
+          "type": "string",
+          "const": "English"
+        },
+        "learning_language": {
+          "type": "string",
+          "const": "French"
+        }
+      },
+      "required": [
+        "instruction_language",
+        "learning_language"
+      ],
+      "additionalProperties": false
+    },
+    "learning_objectives": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "properties": {
+        "created_by": {
+          "type": "string",
+          "minLength": 1
+        },
+        "reviewed_by": {
+          "type": "string"
+        },
+        "source_notes": {
+          "minItems": 1,
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "url": {
+                "type": "string",
+                "format": "uri"
+              },
+              "title": {
+                "type": "string",
+                "minLength": 1
+              },
+              "accessed_at": {
+                "type": "string",
+                "format": "date",
+                "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))$"
+              },
+              "license": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "url",
+              "title",
+              "accessed_at"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "created_by",
+        "source_notes"
+      ],
+      "additionalProperties": false
+    },
+    "audio_assets": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+          },
+          "text": {
+            "type": "string",
+            "minLength": 1
+          },
+          "slow_text": {
+            "type": "string"
+          },
+          "locale": {
+            "type": "string",
+            "const": "fr-FR"
+          }
+        },
+        "required": [
+          "id",
+          "text",
+          "locale"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "vocabulary": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+          },
+          "french": {
+            "type": "string",
+            "minLength": 1
+          },
+          "english": {
+            "type": "string",
+            "minLength": 1
+          },
+          "article": {
+            "type": "string"
+          },
+          "gender": {
+            "type": "string",
+            "enum": [
+              "masculine",
+              "feminine",
+              "neutral",
+              "not-applicable"
+            ]
+          },
+          "part_of_speech": {
+            "type": "string",
+            "minLength": 1
+          },
+          "ipa": {
+            "type": "string"
+          },
+          "pronunciation_guide": {
+            "type": "string",
+            "minLength": 1
+          },
+          "example_french": {
+            "type": "string",
+            "minLength": 1
+          },
+          "example_english": {
+            "type": "string",
+            "minLength": 1
+          },
+          "audio_id": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+          },
+          "image_ref": {
+            "type": "string"
+          },
+          "display_order": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          }
+        },
+        "required": [
+          "id",
+          "french",
+          "english",
+          "article",
+          "gender",
+          "part_of_speech",
+          "pronunciation_guide",
+          "example_french",
+          "example_english",
+          "audio_id",
+          "display_order"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "dialogues": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "lines": {
+            "minItems": 2,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                },
+                "speaker": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "french": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "english": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "audio_id": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                }
+              },
+              "required": [
+                "id",
+                "speaker",
+                "french",
+                "english",
+                "audio_id"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "lines"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "exercises": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "audio_to_word",
+              "audio_to_picture",
+              "matching",
+              "multiple_choice",
+              "missing_word",
+              "sentence_ordering",
+              "listening_comprehension",
+              "dictation",
+              "pronunciation",
+              "dialogue_response",
+              "review"
+            ]
+          },
+          "instruction": {
+            "type": "string",
+            "minLength": 1
+          },
+          "prompt": {
+            "type": "string",
+            "minLength": 1
+          },
+          "options": {
+            "default": [],
+            "maxItems": 4,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "pairs": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "left": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "right": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "left",
+                "right"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "words": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "correct_answer": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1
+              },
+              {
+                "type": "object",
+                "propertyNames": {
+                  "type": "string"
+                },
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
+          "audio_id": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+          },
+          "vocabulary_refs": {
+            "default": [],
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+            }
+          },
+          "dialogue_ref": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+          },
+          "explanation": {
+            "type": "string",
+            "minLength": 1
+          },
+          "age_modes": {
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "ages_5_7",
+                "ages_8_9",
+                "ages_10_11",
+                "adults"
+              ]
+            }
+          }
+        },
+        "required": [
+          "id",
+          "type",
+          "instruction",
+          "prompt",
+          "options",
+          "correct_answer",
+          "vocabulary_refs",
+          "explanation",
+          "age_modes"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "pronunciation_prompts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+          },
+          "vocabulary_id": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+          },
+          "prompt_french": {
+            "type": "string",
+            "minLength": 1
+          },
+          "tip_english": {
+            "type": "string",
+            "minLength": 1
+          },
+          "audio_id": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+          }
+        },
+        "required": [
+          "id",
+          "vocabulary_id",
+          "prompt_french",
+          "tip_english",
+          "audio_id"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "age_adaptations": {
+      "type": "object",
+      "properties": {
+        "ages_5_7": {
+          "type": "object",
+          "properties": {
+            "approach": {
+              "type": "string",
+              "minLength": 1
+            },
+            "activity": {
+              "type": "string",
+              "minLength": 1
+            },
+            "excluded_exercise_types": {
+              "default": [],
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "required": [
+            "approach",
+            "activity",
+            "excluded_exercise_types"
+          ],
+          "additionalProperties": false
+        },
+        "ages_8_9": {
+          "type": "object",
+          "properties": {
+            "approach": {
+              "type": "string",
+              "minLength": 1
+            },
+            "activity": {
+              "type": "string",
+              "minLength": 1
+            },
+            "excluded_exercise_types": {
+              "default": [],
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "required": [
+            "approach",
+            "activity",
+            "excluded_exercise_types"
+          ],
+          "additionalProperties": false
+        },
+        "ages_10_11": {
+          "type": "object",
+          "properties": {
+            "approach": {
+              "type": "string",
+              "minLength": 1
+            },
+            "activity": {
+              "type": "string",
+              "minLength": 1
+            },
+            "excluded_exercise_types": {
+              "default": [],
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "required": [
+            "approach",
+            "activity",
+            "excluded_exercise_types"
+          ],
+          "additionalProperties": false
+        },
+        "adults": {
+          "type": "object",
+          "properties": {
+            "approach": {
+              "type": "string",
+              "minLength": 1
+            },
+            "activity": {
+              "type": "string",
+              "minLength": 1
+            },
+            "excluded_exercise_types": {
+              "default": [],
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "required": [
+            "approach",
+            "activity",
+            "excluded_exercise_types"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "ages_5_7",
+        "ages_8_9",
+        "ages_10_11",
+        "adults"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "schema_version",
+    "content_version",
+    "status",
+    "lesson_id",
+    "title",
+    "topic",
+    "level",
+    "target_languages",
+    "learning_objectives",
+    "provenance",
+    "audio_assets",
+    "vocabulary",
+    "dialogues",
+    "exercises",
+    "pronunciation_prompts",
+    "age_adaptations"
+  ],
+  "additionalProperties": false,
+  "$id": "https://bonjour-bloom.app/schemas/lesson.schema.json",
+  "title": "Bonjour Bloom lesson content"
+}

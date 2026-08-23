@@ -1,0 +1,6 @@
+import {readdir,readFile,stat} from 'node:fs/promises';
+import {resolve} from 'node:path';
+import {lessonContentSchema,formatZodIssues,type LessonContent} from '../lib/content-pipeline.ts';
+
+export async function jsonFiles(input:string):Promise<string[]>{const path=resolve(input),info=await stat(path);if(info.isFile())return[path];const entries=await readdir(path,{withFileTypes:true});const nested:string[][]=await Promise.all(entries.map((entry):Promise<string[]>=>entry.isDirectory()?jsonFiles(resolve(path,entry.name)):Promise.resolve(entry.name.endsWith('.json')?[resolve(path,entry.name)]:[])));return nested.flat().sort()}
+export async function loadContent(input:string){const files=await jsonFiles(input),lessons:LessonContent[]=[],errors:string[]=[],lessonFiles=new Map<string,string>();for(const file of files){try{const value=JSON.parse(await readFile(file,'utf8')),result=lessonContentSchema.safeParse(value);if(result.success){const firstFile=lessonFiles.get(result.data.lesson_id);if(firstFile)errors.push(`${file}:lesson_id: duplicate lesson ID: ${result.data.lesson_id} (first defined in ${firstFile})`);else{lessonFiles.set(result.data.lesson_id,file);lessons.push(result.data)}}else errors.push(...formatZodIssues(file,result.error))}catch(error){errors.push(`${file}:$: ${error instanceof Error?error.message:String(error)}`)}}return{files,lessons,errors}}
