@@ -1,6 +1,6 @@
 # Bonjour Bloom
 
-A tablet-first, local-first French learning PWA for children aged 5–11. The demo includes independent learner profiles, age modes, goals, four complete lesson/review flows, 44 validated vocabulary records, audio, recording, rewards, parent controls, export, install guidance, and offline shell caching.
+A tablet-first French learning PWA for ages 5–11 and adult complete beginners. The initial release contains a validated, data-driven five-lesson Pre-A1 Starter Path, independent learner profiles, resumable progress, French audio, local recording/replay, review scheduling, parent controls, IndexedDB offline state, Supabase sync, install guidance, and app-shell caching.
 
 ## Run and test
 
@@ -17,21 +17,23 @@ No credentials are required. Copy `.env.example` only when configuring productio
 
 ### Email accounts and cloud progress
 
-Create a Supabase project, run `supabase/schema.sql` in its SQL editor, enable Email authentication, and set the Site URL plus redirect URLs for local and production origins. Configure `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY`. The public anon key is protected by row-level security; never place a Supabase service-role key in client configuration. Users receive passwordless email links, and the `user_learning_state` policy restricts each account to its own JSON progress record. Existing device-local progress is uploaded on first sign-in when no cloud record exists.
+Create a Supabase project, run `supabase/schema.sql` and then `supabase/migrations/002_profiles_progress.sql`, enable Email authentication, and set the Site URL plus redirect URLs. Configure `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY`. Email/password sessions persist on-device. The legacy JSON row remains compatible while normalized profile, progress, and idempotent completion tables enforce ownership with RLS. Never place a service-role key in client configuration.
 
 ## Architecture and local data
 
 - `app/bloom-app.tsx`: accessible UI and interaction flows.
-- `lib/curriculum.ts`: Zod-validated content, kept separate from UI.
+- `lib/course-model.ts`: complete Zod course, lesson, vocabulary, dialogue, audio, section and exercise models.
+- `lib/starter-course.ts`: five-lesson Pre-A1 content pack.
+- `lib/curriculum.ts`: compatibility projection consumed by the reusable player.
 - `lib/progress.ts`: profiles, goals, review and pronunciation-result logic.
 - `lib/audio.ts`: recorded, neural, browser-fallback and mock audio providers behind one teacher-voice service.
 - `lib/pronunciation.ts`: technically separate pronunciation evidence contract with local, production and test adapters.
-- `localStorage`: local-first profile/progress repository for this offline demo. A production release should replace this implementation behind a repository interface with IndexedDB and an encrypted, consent-aware sync adapter.
+- `lib/offline-store.ts`: IndexedDB state and offline sync queue; legacy localStorage state is migrated and preserved.
 - `public/sw.js`: versioned app-shell/runtime cache. Updating the cache version never removes local learner data.
 
 ## Content authoring
 
-Vocabulary records require French, English, article, gender, part of speech, learner hint, level, topic, emoji/image reference, example and translation. Lessons contain sequenced exercises with prompt, answer and choices. `curriculumSchema` rejects incomplete packs; run `npm run validate:content` after edits. French content is original educational text. Milo artwork is AI-generated for this project; browser speech synthesis voices are device-provided.
+See `CONTENT_AUTHORING.md`. The schemas reject incomplete packs and broken vocabulary references. Run `npm run validate:content` after every content change. French content is original educational text; Milo artwork is AI-generated for this project.
 
 ## Audio and pronunciation
 
@@ -43,11 +45,11 @@ The continuation audit and license/reuse matrix are in `docs/AUDIT_AND_REUSE.md`
 
 ## Offline and installation
 
-The service worker caches the shell and visited resources. The in-app pack control represents a local pack state; production should pre-cache licensed audio with quota/error reporting in IndexedDB/Cache Storage. Android browsers may offer Install App. On iPadOS use Share → Add to Home Screen. Microphone and speech APIs require secure contexts and vary on embedded browsers.
+The versioned service worker caches the shell and visited resources and shows an update-ready reload control. Lesson content ships in the app bundle; progress uses IndexedDB and queues safe sync after reconnection. Android browsers may offer Install App. On iPadOS use Share → Add to Home Screen. Device French voices may be unavailable offline; the app never substitutes an English voice.
 
 ## Privacy and safety
 
-There are no ads, public chat, purchases, social feed, child-facing external links, or behavioral analytics. Parent settings use a simple local gate suitable only for casual separation, not authentication. No recordings are retained by default. Before launch, obtain legal review for COPPA, UK Age Appropriate Design Code, GDPR/GDPR-K and applicable local laws; complete consent copy, retention/deletion controls, threat modeling, secure headers and endpoint rate limiting.
+See `PRIVACY_DESIGN.md`. There are no ads, public chat, purchases, social feed, child-facing external links, or behavioral analytics. Parent settings use a simple local gate suitable only for casual separation, not authentication. No recordings are retained by default.
 
 ## Backlog
 

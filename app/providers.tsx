@@ -1,3 +1,3 @@
 'use client';
-import { useEffect } from 'react';
-export function Providers({children}:{children:React.ReactNode}){useEffect(()=>{if('serviceWorker'in navigator)navigator.serviceWorker.register('/sw.js').catch(()=>undefined)},[]);return children;}
+import {useEffect,useState} from 'react';
+export function Providers({children}:{children:React.ReactNode}){const[waiting,setWaiting]=useState<ServiceWorker|null>(null);useEffect(()=>{if(!('serviceWorker'in navigator))return;void navigator.serviceWorker.register('/sw.js').then(reg=>{if(reg.waiting)setWaiting(reg.waiting);reg.addEventListener('updatefound',()=>{const worker=reg.installing;worker?.addEventListener('statechange',()=>{if(worker.state==='installed'&&navigator.serviceWorker.controller)setWaiting(worker)})})}).catch(()=>undefined)},[]);return <>{children}{waiting&&<button className="update-banner" onClick={()=>{waiting.postMessage('SKIP_WAITING');location.reload()}}>A new Bonjour Bloom update is ready · Reload</button>}</>}

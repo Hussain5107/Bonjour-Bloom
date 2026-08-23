@@ -1,0 +1,11 @@
+import {describe,expect,it} from 'vitest';
+import {starterCourse} from './starter-course';
+import {checkAnswer,courseProgress,exercisesForAge} from './learning-engine';
+import {coalesceJobs} from './offline-store';
+import {completeLesson,initialData} from './progress';
+import fs from 'node:fs';
+
+describe('starter course',()=>{it('validates five complete lessons',()=>{expect(starterCourse.lessons).toHaveLength(5);expect(starterCourse.lessons.every(l=>l.exercises.length>=6)).toBe(true);expect(starterCourse.lessons.map(l=>l.id)).toEqual(['bonjour','introductions','numbers','colors','family'])});it('keeps audio references on every item and dialogue line',()=>{expect(starterCourse.vocabulary.every(v=>v.audio&&v.slowAudio)).toBe(true);expect(starterCourse.lessons.flatMap(l=>l.dialogue).every(l=>l.audio)).toBe(true)})});
+describe('learning engine',()=>{it('checks accents and punctuation without weakening word order',()=>{expect(checkAnswer('Bonjour !','bonjour')).toBe(true);expect(checkAnswer('Je m’appelle Milo','Milo Je m’appelle')).toBe(false)});it('adapts early lessons away from typing',()=>{const exercises=exercisesForAge(starterCourse.lessons[0].exercises,'early');expect(exercises.some(e=>e.type==='dictation')).toBe(false)});it('prevents duplicate completion rewards',()=>{const profile={id:'p',name:'Milo',ageBand:'early' as const,avatar:'🦊',dailyGoal:1,completed:[],xp:0,minutes:0,reviews:0},once=completeLesson(profile,'bonjour',8),twice=completeLesson(once,'bonjour',8);expect(twice.xp).toBe(40);expect(courseProgress(twice,5)).toBe(20)})});
+describe('offline sync',()=>{it('coalesces to the newest queued state',()=>{const old={id:'1',createdAt:'2026-01-01',state:initialData},latest={id:'2',createdAt:'2026-01-02',state:{...initialData,sound:false}};expect(coalesceJobs([latest,old])?.id).toBe('2')})});
+describe('tenant isolation migration',()=>{it('enables RLS and binds every policy to auth.uid',()=>{const sql=fs.readFileSync(new URL('../supabase/migrations/002_profiles_progress.sql',import.meta.url),'utf8');expect((sql.match(/enable row level security/g)||[]).length).toBe(3);expect((sql.match(/auth\.uid\(\) = user_id/g)||[]).length).toBeGreaterThanOrEqual(6);expect(sql).not.toContain('service_role')})});
