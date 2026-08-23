@@ -1,0 +1,22 @@
+.auth-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding: 4px;
+  background: #edf3ef;
+  border-radius: 13px;
+}
+
+.auth-tabs button {
+  min-height: 42px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--muted);
+  font-weight: 900;
+}
+
+.auth-tabs button[aria-selected="true"] {
+  background: #fff;
+  color: var(--navy);
+  box-shadow: 0 3px 12px #17324d16;
+}
