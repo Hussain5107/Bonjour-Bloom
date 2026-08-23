@@ -1,0 +1,83 @@
+@media (max-width: 800px) {
+  html, body { width: 100%; max-width: 100%; overflow-x: hidden; }
+  body { min-height: 100dvh; background: var(--cream); }
+  img, audio { max-width: 100%; }
+
+  .app-shell { min-height: 100dvh; padding: 64px 0 calc(82px + env(safe-area-inset-bottom)); }
+  .topbar { height: 64px; padding: 0 14px; box-shadow: 0 1px 14px #17324d0d; }
+  .brand { gap: 8px; font-size: 20px; }
+  .brand img { width: 40px; height: 40px; }
+  .top-actions { gap: 6px; }
+  .status-pill { display: none; }
+  .profile-chip { min-width: 48px; min-height: 48px; padding: 5px 8px; justify-content: center; }
+  .profile-chip span { font-size: 27px; }
+  .profile-chip svg { display: none; }
+
+  .main { width: 100%; max-width: none; padding: 24px 16px 28px; }
+  .hello { gap: 14px; }
+  .hello h1, .page-head h1 { font-size: clamp(30px, 9vw, 40px); line-height: 1.08; }
+  .hello > div > p:last-child, .page-head > p:last-child { font-size: 15px; line-height: 1.5; }
+  .day-card { width: 100%; padding: 12px 14px; border-radius: 17px; }
+  .ring { width: 58px; height: 58px; flex: 0 0 58px; }
+
+  .continue-card { margin: 22px 0 30px; min-height: 0; border-radius: 22px; }
+  .lesson-art { min-height: 165px; }
+  .lesson-art img { width: 132px; height: 132px; }
+  .speech { top: 14px; right: 14px; padding: 8px 12px; font-size: 16px; }
+  .continue-copy { padding: 24px 20px 28px; }
+  .continue-copy h2, .unit-card h2 { font-size: 29px; }
+  .lesson-meta { margin: 18px 0; gap: 14px; flex-wrap: wrap; font-size: 13px; }
+  .continue-copy .primary { width: 100%; }
+
+  .section-title { align-items: center; gap: 10px; }
+  .section-title h2 { font-size: 24px; }
+  .section-title button { font-size: 0; min-width: 46px; }
+  .path-grid { gap: 10px; }
+  .path-card { padding: 16px; }
+  .unit-card { padding: 20px; display: grid; gap: 10px; }
+  .lesson-list > button { grid-template-columns: auto minmax(0,1fr) auto; gap: 10px; padding: 13px; }
+  .lesson-list > button > svg { display: none; }
+  .lesson-list small { overflow-wrap: anywhere; }
+  .badge { padding: 6px 9px; }
+  .word-grid button { grid-template-columns: 44px minmax(0,1fr) auto; }
+
+  .bottom-nav { z-index: 45; height: calc(68px + env(safe-area-inset-bottom)); padding: 5px 8px env(safe-area-inset-bottom); border-radius: 20px 20px 0 0; box-shadow: 0 -8px 28px #17324d14; }
+  .bottom-nav button { min-width: 0; min-height: 56px; padding: 6px 2px; border-radius: 13px; color: #75818a; }
+  .bottom-nav button svg { width: 23px; height: 23px; stroke-width: 2.4; }
+  .bottom-nav button.active { background: #fee9df; color: #b94d42; }
+  .bottom-nav button span { white-space: nowrap; font-size: 10px; }
+
+  .account-bar { z-index: 40; bottom: calc(76px + env(safe-area-inset-bottom)); }
+  .profile-menu { top: auto; right: 10px; bottom: calc(76px + env(safe-area-inset-bottom)); left: 10px; width: auto; max-height: 70dvh; overflow-y: auto; border-radius: 24px; }
+
+  .lesson-screen { min-height: 100dvh; grid-template-rows: 62px minmax(0,1fr) auto; }
+  .lesson-screen > header, .lesson-screen > footer { padding: 10px 14px; gap: 10px; }
+  .lesson-screen > header > span { display: none; }
+  .lesson-screen > footer { padding-bottom: calc(12px + env(safe-area-inset-bottom)); }
+  .activity { padding: 22px 16px; }
+  .activity h1 { font-size: 30px; }
+  .activity-emoji { font-size: 68px; margin: 12px; }
+  .choice-row { flex-wrap: wrap; }
+  .sentence-slot { margin: 16px 0; flex-wrap: wrap; }
+  .feedback { align-items: center; gap: 8px; text-align: left; }
+
+  .setup { min-height: 100dvh; padding: 18px 14px; }
+  .setup-head > span { display: none; }
+  .setup-card { margin: 22px auto; padding: 24px 18px; border-radius: 22px; }
+  .welcome { min-height: 100dvh; padding: 42px 18px; }
+  .welcome-copy h1 { font-size: 42px; }
+  .welcome-card { padding: 28px 20px; }
+  .account-page { min-height: 100dvh; align-content: start; gap: 20px; padding: 24px 16px 32px; }
+  .account-brand h1 { font-size: 36px; }
+  .account-brand > p:not(.eyebrow), .account-brand > div { display: none; }
+  .account-card { width: 100%; padding: 23px 18px; border-radius: 22px; }
+  .account-card > svg { display: none; }
+}
+
+@media (max-width: 380px) {
+  .main { padding-inline: 12px; }
+  .bottom-nav { padding-inline: 4px; }
+  .bottom-nav button span { font-size: 9px; }
+  .lesson-list > button { grid-template-columns: auto minmax(0,1fr); }
+  .lesson-list .badge { display: none; }
+}
